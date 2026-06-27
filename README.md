@@ -1,293 +1,317 @@
-# Kind AI — Qand va Sog'liq Boshqaruvi
+<div align="center">
 
-> **Tibbiy eslatma:** Kind AI tibbiy tashxis qo'ymaydi, dori yoki insulin dozasini belgilamaydi. Bu tibbiy tashxis emas — zarur holatda shifokorga murojaat qiling.
+# 🩺 Kind AI
 
-Kind AI — O'zbekiston uchun mo'ljallangan raqamli sog'liq yordamchisi. Qand kasalligi bilan yashayotgan bemorlar va ularning yaqinlari uchun: glukoza nazorati, dori jadval, AI tahlil va favqulodda ogohlantirish — hammasini bitta ilovada.
+### Aqlli Sog'liq Yordamchisi — O'zbekiston uchun
 
-## Loyiha tuzilishi
+**Qand kasalligi nazorati · Dori jadval · AI tahlil · Oila ulashish**
+
+---
+
+[![Android](https://img.shields.io/badge/Android-Kotlin%20%2B%20Compose-brightgreen?logo=android)](https://developer.android.com)
+[![Backend](https://img.shields.io/badge/Backend-FastAPI%20%2B%20PostgreSQL-blue?logo=fastapi)](https://fastapi.tiangolo.com)
+[![AI](https://img.shields.io/badge/AI-Azure%20OpenAI%20GPT--4o-purple?logo=openai)](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+<br/>
+
+> ⚕️ **Tibbiy muhim eslatma:** Kind AI tibbiy tashxis qo'ymaydi, dori yoki insulin dozasini belgilamaydi.
+> Zarur holatda shifokorga murojaat qiling.
+
+</div>
+
+---
+
+## 👥 Jamoa — Ilg'or
+
+| Rol | Mas'uliyat |
+|-----|-----------|
+| **Jamoa nomi** | Ilg'or |
+| **Loyiha nomi** | Kind AI |
+| **Yo'nalish** | HealthTech / AI — O'zbekiston |
+
+---
+
+## 💡 Muammo va Yechim
+
+**Muammo:** O'zbekistonda 3+ million qand kasalligi bilan yashayotgan bemorlar mavjud. Ularning aksariyati:
+- Glukoza darajasini qog'ozga yozib kuzatadi yoki umuman kuzatmaydi
+- Dori qabul jadvalini unutadi
+- Shifokorga borishdan avval o'z holatini tushunmaydi
+- Yaqinlari bilan sog'lik ma'lumotlarini ulasha olmaydi
+
+**Yechim — Kind AI:** Bir ilovada barcha zarur vositalar — glukoza kuzatuvi, dori eslatmasi, sun'iy intellekt tahlili va oila ulashish. O'zbek tilida, mahalliy foydalanuvchiga moslashtirilgan.
+
+---
+
+## 📱 Skrinshtlar
+
+> *Demo video va skrinshtlar qo'shilmoqda...*
+
+---
+
+## ✨ Asosiy Imkoniyatlar
+
+### 🔴 Qand Kasalligi Boshqaruvi
+| Imkoniyat | Tavsif |
+|-----------|--------|
+| **Glukoza kuzatuvi** | mmol/L kiritish, o'lchov konteksti (och qoringa, ovqatdan keyin), alomatlar qayd etish |
+| **Dori jadval** | Tabletka / Insulin jadval, kunlik mos kelish foizi, ko'p kunlik seriya kuzatuvi |
+| **AI Tahlil** | Azure OpenAI GPT-4o + qoida asosidagi zaxira; 4 xavf darajasi (LOW → EMERGENCY) |
+| **Tendensiyalar** | 7 / 30 / 90 kunlik grafik, o'rtacha, eng yuqori/past ko'rsatkichlar |
+| **Shifokor xulosasi** | To'liq davr hisoboti, alomatlar, adherence, AI natijalari (PDF tez orada) |
+| **Oila ulashish** | G'amxo'r qo'shish, ruxsatni istalgan vaqtda bekor qilish (consent-based) |
+| **SOS tugmasi** | 103 tez yordam + yaqinlarga avtomatik ogohlantirish xabari |
+
+### 👴 Keksa Ota-Ona Monitoring
+| Imkoniyat | Tavsif |
+|-----------|--------|
+| **Sog'liq yozuvlari** | Qon bosimi, qon shakari, yurak urishi, SpO2, harorat |
+| **Smartwatch integratsiya** | Heart rate, qadamlar, uyqu, yiqilish aniqlash |
+| **Health Connect** | Android telefon sog'lik ma'lumotlarini avtomatik o'qish |
+| **Bolalar dashboard** | Real-vaqt monitoring, ogohlantirishlar, AI baholash |
+| **AI Xavf Baholash** | Har bir o'lchov uchun avtomatik xavf darajasi va tavsiyalar |
+
+---
+
+## 🏗️ Arxitektura
 
 ```
 kind-ai/
-├── app/                       # FastAPI backend
-│   ├── models/                # SQLAlchemy 13 ta model
-│   ├── routers/               # API endpointlar (diabetes + elderly)
-│   ├── schemas/               # Pydantic validatsiya
-│   └── services/              # AI, risk hisoblash, alertlar
-├── alembic/versions/          # DB migratsiyalari 001-003
-├── android/                   # Kotlin + Jetpack Compose
-│   └── app/src/main/java/com/kindai/app/
-│       ├── ui/screens/diabetes/    # 12 ta qand ekrani
-│       ├── ui/screens/elderly_own/ # Keksa ota-ona ekranlar
-│       └── data/                   # DTO, Retrofit, local storage
-├── requirements.txt
-└── .env.example
+├── 📁 app/                         # FastAPI Backend
+│   ├── models/                     # 13 ta SQLAlchemy model
+│   │   ├── user.py
+│   │   ├── elderly.py, medication.py, health_record.py ...
+│   │   ├── diabetes_profile.py     # Diabetes profil
+│   │   ├── diabetes_record.py      # Glukoza o'lchovlari
+│   │   ├── diabetes_medication.py  # Dori + qabul loglari
+│   │   ├── diabetes_ai_assessment.py
+│   │   └── diabetes_alert.py
+│   ├── routers/                    # REST API endpointlar
+│   │   ├── auth.py                 # JWT autentifikatsiya
+│   │   ├── diabetes_self.py        # 19 ta /api/diabetes/me/* endpoint
+│   │   ├── diabetes_caregiver.py   # G'amxo'r kirish
+│   │   ├── elderly.py, health_records.py ...
+│   ├── services/
+│   │   ├── diabetes_ai_service.py  # Azure OpenAI integratsiya
+│   │   └── diabetes_risk_service.py # Qoida asosidagi xavf hisoblash
+│   └── schemas/diabetes.py         # 22 ta Pydantic validatsiya
+│
+├── 📁 alembic/versions/            # Ma'lumotlar bazasi migratsiyalari
+│   ├── 001_initial_schema.py
+│   ├── 002_add_elderly_accounts.py
+│   └── 003_diabetes_pivot.py       # Additive (DROP yo'q)
+│
+└── 📁 android/                     # Kotlin Android Ilovasi
+    └── app/src/main/java/com/kindai/app/
+        ├── ui/screens/diabetes/    # 12 ta qand ekrani
+        │   ├── DiabetesHomeScreen.kt
+        │   ├── AddGlucoseScreen.kt
+        │   ├── GlucoseHistoryScreen.kt
+        │   ├── DiabetesMedicationScreen.kt
+        │   ├── DiabetesAiScreen.kt
+        │   ├── DiabetesTrendsScreen.kt
+        │   ├── DoctorSummaryScreen.kt
+        │   ├── DiabetesAlertsScreen.kt
+        │   ├── DiabetesSosScreen.kt
+        │   └── FamilySharingScreen.kt
+        ├── ui/screens/elderly_own/ # Keksa ota-ona ekranlar
+        ├── ui/components/          # Qayta ishlatiladigan UI komponentlar
+        ├── ui/design/              # KindColors, KindShapes, KindSpacing
+        ├── ui/navigation/          # AppNavigation + Routes
+        └── data/                   # DTO, Retrofit, TokenManager
 ```
 
-## Asosiy imkoniyatlar
+---
 
-**Qand kasalligi boshqaruvi (yangi):**
-- Glukoza kiritish — mmol/L, kontekst (och qoringa/ovqatdan keyin), alomatlar
-- Dori jadval — tabletka/insulin, mos kelish foizi %, seriya kuzatuvi
-- AI tahlil — Azure OpenAI + qoida asosidagi zaxira (LOW/MEDIUM/HIGH/EMERGENCY)
-- Tendensiyalar — kunlik grafik, 7/30/90 kunlik davr
-- Shifokor xulosasi — to'liq davr, PDF tez orada
-- Oila ulashish — g'amxo'r qo'shish, ruxsatni bekor qilish
-- SOS tugmasi — 103 + yaqinlarga avtomatik ogohlantirish
+## 🛠️ Texnologiyalar
 
-**Keksa ota-ona monitoring (mavjud):**
-- Smartwatch + telefon Health Connect ma'lumotlari
-- Bolalar uchun real-vaqt dashboard
-- AI xavf baholash va ogohlantirishlar
+### Backend
+| Texnologiya | Versiya | Maqsad |
+|-------------|---------|--------|
+| **Python** | 3.11+ | Asosiy til |
+| **FastAPI** | 0.111 | REST API framework |
+| **PostgreSQL** | 15 | Asosiy ma'lumotlar bazasi |
+| **SQLAlchemy** | 2.0 | ORM |
+| **Alembic** | 1.13 | DB migratsiyalari |
+| **Azure OpenAI** | GPT-4o | AI tahlil |
+| **JWT** (python-jose) | 3.3 | Autentifikatsiya |
+| **Pydantic** | v2 | Ma'lumot validatsiyasi |
 
-## Tech Stack
+### Android
+| Texnologiya | Versiya | Maqsad |
+|-------------|---------|--------|
+| **Kotlin** | 1.9+ | Asosiy til |
+| **Jetpack Compose** | 1.6+ | Declarative UI |
+| **Material Design 3** | — | Design system |
+| **Retrofit 2** | — | HTTP klient |
+| **Navigation Compose** | — | Ekranlar orasida navigatsiya |
+| **Health Connect** | — | Telefon sog'lik ma'lumotlari |
 
-**Backend:** Python 3.11+, FastAPI, PostgreSQL, SQLAlchemy 2.x + Alembic, Pydantic v2, JWT, Azure OpenAI
+---
 
-**Android:** Kotlin, Jetpack Compose + Material 3, Retrofit, Navigation Compose, Health Connect
+## 🚀 Ishga Tushirish
 
-## Setup
-
-### 1. Create virtual environment
+### Backend
 
 ```bash
+# 1. Virtual muhit
 python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # macOS/Linux
 
-# Windows
-venv\Scripts\activate
-
-# macOS/Linux
-source venv/bin/activate
-```
-
-### 2. Install dependencies
-
-```bash
+# 2. Kutubxonalar
 pip install -r requirements.txt
-```
 
-### 3. Configure environment
-
-```bash
+# 3. Muhit sozlamasi
 cp .env.example .env
-# Edit .env with your actual values
-```
+# .env faylini tahrirlang (DB, JWT, Azure sozlamalari)
 
-### 4. Run database migration
-
-```bash
+# 4. Ma'lumotlar bazasi
 alembic upgrade head
+
+# 5. Server
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 ```
 
-### 5. Start development server
+### Android
 
 ```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+# Android Studio da oching: android/ papkasini
+# yoki terminaldan:
+
+cd android
+.\gradlew.bat assembleDebug
+adb install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
-## API Documentation
+### Muhit o'zgaruvchilari (`.env`)
 
-After starting the server:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+```env
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+JWT_SECRET=your-strong-secret-key
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
 
-## API Endpoints
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_API_KEY=your_api_key
+AZURE_OPENAI_DEPLOYMENT_NAME=your_deployment
+AZURE_OPENAI_API_VERSION=2024-02-15-preview
+```
 
-### Auth
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login and get JWT token |
-| GET | `/api/auth/me` | Get current user profile |
+---
 
-### Elderly Profiles
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/elderly` | Create elderly profile |
-| GET | `/api/elderly` | List my elderly profiles |
-| GET | `/api/elderly/{id}` | Get profile details |
-| PUT | `/api/elderly/{id}` | Update profile |
-| DELETE | `/api/elderly/{id}` | Delete profile |
+## 🔌 API Endpointlar
 
-### Medications
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/elderly/{id}/medications` | Add medication |
-| GET | `/api/elderly/{id}/medications` | List medications |
-| PUT | `/api/medications/{id}` | Update medication |
-| DELETE | `/api/medications/{id}` | Delete medication |
-| POST | `/api/medications/{id}/taken` | Mark as taken |
+### Autentifikatsiya
+```
+POST /api/auth/register     — Ro'yxatdan o'tish
+POST /api/auth/login        — Kirish (JWT token)
+GET  /api/auth/me           — Joriy foydalanuvchi
+```
 
-### Health Records
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/elderly/{id}/health-records` | Add record |
-| GET | `/api/elderly/{id}/health-records` | List records |
-| GET | `/api/elderly/{id}/health-records/latest` | Get latest |
+### Qand Kasalligi — Shaxsiy (`/api/diabetes/me/`)
+```
+POST/GET  /profile                  — Profil yaratish / olish
+GET       /dashboard                — To'liq dashboard
+POST/GET  /glucose                  — Glukoza kiritish / tarixi
+GET       /glucose/trends           — Tendensiyalar
+POST/GET  /medications              — Dorilar
+POST      /medications/{id}/taken   — Dori qabul qilindi/o'tkazildi
+GET       /medication-adherence     — Mos kelish foizi
+POST      /ai-assess                — AI tahlil ishga tushirish
+GET       /alerts                   — Ogohlantirishlar
+POST      /sos                      — SOS yuborish
+GET       /doctor-summary           — Shifokor xulosasi
+```
 
-### Watch Data
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/elderly/{id}/watch-data` | Send watch data |
-| GET | `/api/elderly/{id}/watch-data` | List watch data |
-| GET | `/api/elderly/{id}/watch-data/latest` | Get latest |
+### Keksa Ota-Ona (`/api/elderly/{id}/`)
+```
+POST/GET  /health-records     — Sog'lik yozuvlari
+POST/GET  /medications        — Dorilar
+POST/GET  /watch-data         — Smartwatch ma'lumotlari
+POST      /ai-assess          — AI xavf baholash
+GET       /dashboard          — To'liq dashboard
+```
 
-### AI Assessment
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/elderly/{id}/ai-assess` | Run AI assessment |
-| GET | `/api/elderly/{id}/ai-assessments` | List assessments |
-| GET | `/api/elderly/{id}/ai-assessments/latest` | Get latest |
+> 📄 Swagger UI: `http://localhost:8001/docs`
 
-### Alerts
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/alerts` | List my alerts |
-| GET | `/api/elderly/{id}/alerts` | List elderly alerts |
-| PUT | `/api/alerts/{id}/read` | Mark as read |
+---
 
-### Dashboard
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/elderly/{id}/dashboard` | Full dashboard summary |
+## 🔒 Xavfsizlik
 
-### Health Check
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Server health check |
+- `.env` fayli `.gitignore` orqali himoyalangan — GitHub ga **hech qachon** yuklanmaydi
+- JWT tokenlar 7 kun amal qiladi
+- G'amxo'r faqat bemor ruxsati bilan (`consent_confirmed=true`) ma'lumotlarni ko'ra oladi
+- Barcha endpointlar `Authorization: Bearer <token>` talab qiladi
+- SQL injection: SQLAlchemy ORM parametrik so'rovlar
 
-## Sample cURL Requests
+---
 
-### Register
+## ⚕️ Tibbiy Xavfsizlik Prinsiplari
+
+Kind AI quyidagilarni **HECH QACHON** qilmaydi:
+
+| ❌ Taqiqlangan | ✅ Kind AI nima qiladi |
+|---------------|----------------------|
+| Tibbiy tashxis qo'yish | Xavf darajasini bildiradi (signal) |
+| Dori tayinlash | Mavjud dori jadvalini kuzatadi |
+| Insulin dozasini o'zgartirish | Faqat yozib olingan dozani eslatadi |
+| Shifokorni almashtirish | Shifokorga murojaat etishni tavsiya qiladi |
+
+**Har bir AI natijasi yonida disclaimer ko'rsatiladi:**
+> *"Bu tibbiy tashxis emas. Zarur holatda shifokorga murojaat qiling. Kind AI dori yoki insulin dozasini belgilamaydi."*
+
+---
+
+## 📊 Glukoza Xavf Darajalari
+
+| Daraja | Qiymat (mmol/L) | Rang | Tavsif |
+|--------|----------------|------|--------|
+| 🟢 Xavfsiz | 4.0 – 8.0 | Yashil | Normal ko'rsatkich |
+| 🟡 O'rta | 8.0 – 11.1 | Sariq | Kuzatuv tavsiya |
+| 🟠 Yuqori | 11.1 – 16.7 | To'q sariq | Shifokorga murojaat |
+| 🔴 Juda yuqori | ≥ 16.7 | Qizil | Zudlik bilan harakat |
+| 🚨 Juda past | < 3.0 | Qoʻngʻir qizil | FAVQULODDA |
+
+---
+
+## 📁 Ma'lumotlar Bazasi Migratsiyalari
+
+```
+001_initial_schema.py     — Asosiy jadvallar (users, elderly, medications, ...)
+002_add_elderly_accounts.py — Keksa hisoblar
+003_diabetes_pivot.py     — Qand kasalligi (6 ta yangi jadval, additive only)
+```
+
+> Migration 003 faqat `CREATE TABLE` / `ADD COLUMN` — mavjud ma'lumotlarni o'zgartirmaydi.
+
+---
+
+## 🤝 Hissa Qo'shish
 
 ```bash
-curl -X POST http://localhost:8000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "full_name": "Alisher Karimov",
-    "phone": "+998901234567",
-    "password": "secret123",
-    "role": "CHILD"
-  }'
+git clone https://github.com/your-username/kind-ai.git
+cd kind-ai
+git checkout -b feature/your-feature
+# o'zgartirishlar kiriting
+git commit -m "feat: your feature description"
+git push origin feature/your-feature
+# Pull Request oching
 ```
 
-### Login
+---
 
-```bash
-curl -X POST http://localhost:8000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "login": "+998901234567",
-    "password": "secret123"
-  }'
-```
+## 📄 Litsenziya
 
-### Create elderly profile
+MIT License — ta'lim, tadqiqot va tijoriy maqsadlarda foydalanish uchun erkin.
 
-```bash
-curl -X POST http://localhost:8000/api/elderly \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "full_name": "Karimov Abdulla",
-    "age": 72,
-    "gender": "male",
-    "chronic_diseases": "Gipertoniya, Diabet tip 2",
-    "emergency_phone": "+998901111111"
-  }'
-```
+---
 
-### Add medication
+<div align="center">
 
-```bash
-curl -X POST http://localhost:8000/api/elderly/ELDERLY_ID/medications \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "name": "Metformin",
-    "dosage": "500mg",
-    "instruction": "Ovqatdan keyin",
-    "time_to_take": "08:00:00",
-    "before_or_after_meal": "after"
-  }'
-```
+**Jamoa Ilg'or** tomonidan ❤️ bilan yaratildi
 
-### Add health record
+*Kind AI — Sog'ligingizni nazorat qiling, hayotingizni yaxshilang*
 
-```bash
-curl -X POST http://localhost:8000/api/elderly/ELDERLY_ID/health-records \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "systolic_bp": 145,
-    "diastolic_bp": 92,
-    "blood_sugar": 7.8,
-    "heart_rate": 82,
-    "spo2": 96,
-    "temperature": 36.6,
-    "symptoms": "Bosh og'rig'i",
-    "mood": "normal"
-  }'
-```
-
-### Send watch data
-
-```bash
-curl -X POST http://localhost:8000/api/elderly/ELDERLY_ID/watch-data \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "heart_rate": 78,
-    "steps": 3200,
-    "sleep_hours": 6.5,
-    "spo2": 97,
-    "fall_detected": false,
-    "battery": 65
-  }'
-```
-
-### Run AI assessment
-
-```bash
-curl -X POST http://localhost:8000/api/elderly/ELDERLY_ID/ai-assess \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
-
-### Get dashboard
-
-```bash
-curl http://localhost:8000/api/elderly/ELDERLY_ID/dashboard \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
-
-## Render Deployment
-
-### Environment Variables on Render
-
-Set these in your Render web service:
-- `DATABASE_URL` - provided by Render PostgreSQL
-- `JWT_SECRET` - strong random string
-- `JWT_ALGORITHM` - HS256
-- `ACCESS_TOKEN_EXPIRE_MINUTES` - 10080
-- `AZURE_OPENAI_ENDPOINT` - your Azure endpoint
-- `AZURE_OPENAI_API_KEY` - your Azure key
-- `AZURE_OPENAI_DEPLOYMENT` - deployment name
-- `AZURE_OPENAI_API_VERSION` - 2024-02-15-preview
-- `CORS_ORIGINS` - your app domains
-
-### Build Command
-
-```bash
-pip install -r requirements.txt && alembic upgrade head
-```
-
-### Start Command
-
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
-
-## Medical Safety Disclaimer
-
-This system does NOT provide medical diagnosis or prescribe medicine. It only classifies risk levels and recommends contacting family members, doctors, or emergency services when needed.
-
-**"Bu tibbiy diagnoz emas. Zarur holatda shifokorga murojaat qiling."**
+</div>
